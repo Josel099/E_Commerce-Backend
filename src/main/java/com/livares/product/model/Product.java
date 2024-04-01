@@ -19,18 +19,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int Id;
+public class Product extends BaseEntity {
+
 	private String title;
 	private String img;
 	private String description;
 	private int price;
 	private int quantity;
-	
-	
+
 	@ManyToOne
 	@JoinColumn(name = "category_Id" , referencedColumnName="id")
 	private  Category category;

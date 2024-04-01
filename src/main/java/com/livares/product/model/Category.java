@@ -1,5 +1,6 @@
 package com.livares.product.model;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,10 +14,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Category {
+public class Category extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int Id;
 	private String categoryName;
 }

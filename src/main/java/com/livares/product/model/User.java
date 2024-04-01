@@ -16,10 +16,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	 private int Id;
+public class User extends BaseEntity{
+
 	 private String firstName;
 	 private String lastName;
 	 private String usernameString;
