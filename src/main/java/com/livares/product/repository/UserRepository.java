@@ -1,5 +1,11 @@
 package com.livares.product.repository;
 
-public interface UserRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.livares.product.model.User;
+
+import jakarta.persistence.Id;
+
+public interface UserRepository extends JpaRepository<User, Id> {
 
 }
