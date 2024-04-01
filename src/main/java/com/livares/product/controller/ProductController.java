@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.livares.product.model.Product;
+import com.livares.product.model.User;
 import com.livares.product.service.ProductServiceInterface;
 
 
