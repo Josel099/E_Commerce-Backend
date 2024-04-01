@@ -28,7 +28,7 @@ public class ProductController {
 	
 	
 	 // Saves a product to the database
-	@PostMapping("/save")
+     	@PostMapping("/save")
 	public String saveProduct(@RequestBody Product product) {
 		productServiceInterface.saveProduct(product);
 		return "Product saved successfully";

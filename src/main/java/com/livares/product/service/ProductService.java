@@ -58,12 +58,16 @@ public class ProductService implements ProductServiceInterface {
 	@Override
 	public Product updateProduct(int Id, Product product) {
 		Product product2Update = productRepository.findById(Id).orElseThrow();
-		product2Update.setTitle(product.getTitle());
-		product2Update.setImg(product.getImg());
-		product2Update.setDescription(product.getDescription());
-		product2Update.setPrice(product.getPrice());
+		 product2Update.setTitle(product.getTitle());
+		 product2Update.setImg(product.getImg());
+		 product2Update.setDescription(product.getDescription());
+		 product2Update.setPrice(product.getPrice()); 
 		return productRepository.save(product2Update);
 	}
+	
+	
+	
+	
 	
 	/**==========================================
 	 * Deletes a product by its ID.
