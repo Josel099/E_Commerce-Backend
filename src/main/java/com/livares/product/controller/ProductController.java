@@ -3,6 +3,7 @@ package com.livares.product.controller;
 import java.util.List;
 import java.util.Optional;
 
+import com.livares.product.Dto.ProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.livares.product.model.Product;
-import com.livares.product.model.User;
-import com.livares.product.service.productService.ProductServiceInterface;
+import com.livares.product.service.ProductServiceInterface;
 
 
 
@@ -30,11 +30,17 @@ public class ProductController {
 	
 	 // Saves a product to the database
      	@PostMapping("/save")
-	public String saveProduct(@RequestBody Product product) {
-		productServiceInterface.saveProduct(product);
+	public String saveProduct(@RequestBody ProductDTO productDTO) {
+		productServiceInterface.saveProduct(productDTO);
 		return "Product saved successfully";
 	}
-	
+
+   // endpoint for saving multiple product at a time
+	@PostMapping("/saveAll")
+	public String saveAllProduct(@RequestBody List<ProductDTO> productDTOList){
+			 productServiceInterface.saveAllProducts(productDTOList);
+			 return "all products saved sucessfully";
+	}
 	
 	 //Retrieves all products from the database.
 	@GetMapping("/getAll")
@@ -51,8 +57,8 @@ public class ProductController {
 	
 	 //Updates a product
 	@PutMapping("/updateProduct/{Id}")
-	public Product updateProduct(@PathVariable int Id,@RequestBody Product product) {
-		return productServiceInterface.updateProduct(Id, product);
+	public Product updateProduct(@PathVariable int Id,@RequestBody ProductDTO productDTO) {
+		return productServiceInterface.updateProduct(Id, productDTO);
 	}
 	
 	

@@ -14,7 +14,10 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Category extends BaseEntity {
 
 	private String categoryName;
+
 }
