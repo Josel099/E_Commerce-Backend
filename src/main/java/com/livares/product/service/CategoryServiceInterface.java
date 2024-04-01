@@ -10,7 +10,9 @@ public interface CategoryServiceInterface {
 public String saveCategory(CategoryDTO categoryDTO);
 
 // deleting an existing category by it's Id
-public String deleteCategoryById(int id);
+//public String deleteCategoryById(int id); : problem when try to delete bcz relation ship established
+
+
 
 //displaying all categories in the database
 public List<Category> getAllCategory();

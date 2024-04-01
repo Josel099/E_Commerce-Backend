@@ -6,6 +6,6 @@ import com.livares.product.model.User;
 
 import jakarta.persistence.Id;
 
-public interface UserRepository extends JpaRepository<User, Id> {
+public interface UserRepository extends JpaRepository<User,Integer> {
 
 }

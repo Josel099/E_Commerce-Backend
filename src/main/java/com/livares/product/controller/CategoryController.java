@@ -21,11 +21,11 @@ public class CategoryController {
        return categoryServiceInterface.saveCategory(categoryDTO);
     }
 
-    // delete an category by it's Id
-    @DeleteMapping("/delete/{Id}")
-    public String deleteById(@PathVariable int Id){
-        return categoryServiceInterface.deleteCategoryById(Id);
-    }
+//    // delete an category by it's Id
+//    @DeleteMapping("/delete/{Id}")
+//    public String deleteById(@PathVariable int Id){
+//        return categoryServiceInterface.deleteCategoryById(Id);
+//    }
 
     @GetMapping("/getAllCategory")
     public List<Category> getAll(){
