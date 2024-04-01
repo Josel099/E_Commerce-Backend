@@ -1,4 +1,4 @@
-package com.livares.product.service;
+package com.livares.product.service.productService;
 
 import java.util.List;
 import java.util.Optional;

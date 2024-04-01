@@ -1,8 +1,5 @@
 package com.livares.product.model;
 
-import org.hibernate.id.factory.internal.AutoGenerationTypeStrategy;
-
-import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,13 +17,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-
-	@Id 
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int Id;
-	private String  firstName;
-	private String lastName;
-	private String username;
-	private String  password;
-	
+	 private int Id;
+	 private String firstName;
+	 private String lastName;
+	 private String usernameString;
+	 private String  password;
 }
