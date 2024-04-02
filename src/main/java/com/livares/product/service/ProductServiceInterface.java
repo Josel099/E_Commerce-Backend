@@ -3,7 +3,9 @@ package com.livares.product.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.livares.product.Dto.CategoryDTO;
 import com.livares.product.Dto.ProductDTO;
+import com.livares.product.model.Category;
 import com.livares.product.model.Product;
 
 /**===================================================================
@@ -35,4 +37,15 @@ public interface ProductServiceInterface {
 	
 	//get products by it's category
 	public List<Product> getProductByCategory(String category);
+	
+	
+	
+	// categoriea methods
+	
+	// adding a new category
+	public String saveCategory(CategoryDTO categoryDTO);
+
+
+	//displaying all categories in the database
+	public List<Category> getAllCategory();
 }

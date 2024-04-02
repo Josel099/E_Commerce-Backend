@@ -1,7 +1,5 @@
 package com.livares.product.Dto;
 
-import com.livares.product.model.BaseEntity;
-
 import lombok.Getter;
 import lombok.Setter;
 

@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.livares.product.Dto.CategoryDTO;
 import com.livares.product.Dto.ProductDTO;
 import com.livares.product.model.Category;
 import com.livares.product.repository.CategoryRepository;
@@ -145,6 +146,24 @@ public class ProductServiceImp implements ProductServiceInterface {
 	public List<Product> getProductByCategory(String category) {
 		return productRepository.findProductByCategory(category);
 	}
+	
+	
+	
+	// category service implementations 
+
+	    @Override
+	    public String saveCategory(CategoryDTO categoryDTO) {
+	        Category category = new Category();
+	        String name = categoryDTO.getCategoryName();
+	        category.setCategoryName(name);
+	        categoryRepository.save(category);
+	        return "Category Added";
+	    }
+
+	    @Override
+	    public List<Category> getAllCategory() {
+	        return categoryRepository.findAll();
+	    }
 	
 }
 

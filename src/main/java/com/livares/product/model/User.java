@@ -15,7 +15,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class User extends BaseEntity{
 	
 	@Column(name = "first_name")
@@ -25,7 +24,7 @@ public class User extends BaseEntity{
 	 private String lastName;
 	
 	@Column(name = "user_name")
-	 private String usernameString;
+	 private String username;
 	
 	@Column(name = "password")
 	 private String  password;
