@@ -8,12 +8,12 @@ import java.util.stream.Collectors;
 import com.livares.product.Dto.ProductDTO;
 import com.livares.product.model.Category;
 import com.livares.product.repository.CategoryRepository;
+import com.livares.product.repository.ProductRepository;
 import com.livares.product.service.ProductServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.livares.product.model.Product;
-import com.livares.product.repository.ProductRepository;
 import org.webjars.NotFoundException;
 
 
@@ -133,6 +133,17 @@ public class ProductServiceImp implements ProductServiceInterface {
 	@Override
 	public void deleteAllProduct() {
 		productRepository.deleteAll();
+	}
+
+
+	/**==========================================
+	 * get list of   products by its category name.
+	 * @param category The category name of the products to fetch.
+	 * @return 
+	 =============================================*/
+	@Override
+	public List<Product> getProductByCategory(String category) {
+		return productRepository.findProductByCategory(category);
 	}
 	
 }

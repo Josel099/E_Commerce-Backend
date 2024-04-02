@@ -33,5 +33,6 @@ public interface ProductServiceInterface {
 	//Deletes all products.
 	public void deleteAllProduct();
 	
-	
+	//get products by it's category
+	public List<Product> getProductByCategory(String category);
 }

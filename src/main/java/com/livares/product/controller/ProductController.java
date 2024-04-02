@@ -77,6 +77,17 @@ public class ProductController {
 		productServiceInterface.deleteAllProduct();
 		return "All products deleted from the database";
 	}
+	
+	// endpoint for  select products with particular category
+		@GetMapping("/getProductsbyCategory/{category}")
+		public List<Product> getProductByCategory(@PathVariable String category) {
+			System.out.println(category);
+			return productServiceInterface.getProductByCategory(category);
+		}
+		
+		
+		
+		
 }
 
 	
