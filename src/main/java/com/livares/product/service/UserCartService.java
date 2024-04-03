@@ -11,4 +11,6 @@ public interface UserCartService {
 	
 	public List<ProductDTO> getCartItemsByUserId(int userId);
 	
+	public String deleteCartItem(int userId,int productId);
+	
 }
