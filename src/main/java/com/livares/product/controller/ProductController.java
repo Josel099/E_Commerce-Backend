@@ -29,80 +29,124 @@ public class ProductController {
 
 	@Autowired
 	private ProductService productService;
-	 // Saves a product to the database
+
+	/**==============================================================
+	 * Saves a single product to the database.
+	 * @param productDTO The ProductDTO containing details of the product to be saved
+	 * @return A string indicating the success of the operation
+	==============================================================*/
      	@PostMapping("/save")
 	public String saveProduct(@RequestBody ProductDTO productDTO) {
 		productService.saveProduct(productDTO);
 		return "Product saved successfully";
 	}
 
-   // endpoint for saving multiple product at a time
+
+	/**==============================================================
+	 * Saves multiple products to the database.
+	 * @param productDTOList The list of ProductDTO objects containing details of the products to be saved
+	 * @return A string indicating the success of the operation
+	==================================================================*/
 	@PostMapping("/saveAll")
 	public String saveAllProduct(@RequestBody List<ProductDTO> productDTOList){
 			 productService.saveAllProducts(productDTOList);
 			 return "all products saved sucessfully";
 	}
-	
-	 //Retrieves all products from the database.
+
+	/**==============================================================
+	 * Retrieves all products from the database.
+	 * @return A list of Product objects representing all products in the database
+	==============================================================*/
 	@GetMapping("/getAll")
 	public List<Product> getAllProducts(){
 		return productService.getAllProducts();
 	}
-	
-	//Retrieves a product by its ID. 
+
+
+
+	/**==============================================================
+	 * Retrieves a product by its ID.
+	 * @param Id The ID of the product to retrieve
+	 * @return An Optional containing the Product object if found, or empty if not found
+	==============================================================*/
 	@GetMapping("/getById/{Id}")
 	public Optional<Product> getProductById(@PathVariable int Id){
 		return productService.getProductById(Id);
 	}
-	
-	
-	 //Updates a product
-	@PutMapping("/updateProduct/{Id}")
+
+
+
+	/**==============================================================
+	 * Updates a product with the specified ID.
+	 * @param Id The ID of the product to update
+	 * @param productDTO The ProductDTO containing updated details of the product
+	 * @return The updated Product object
+	 * ==============================================================*/
+	 	@PutMapping("/updateProduct/{Id}")
 	public Product updateProduct(@PathVariable int Id,@RequestBody ProductDTO productDTO) {
 		return productService.updateProduct(Id, productDTO);
 	}
-	
-	
-	// Delete product by Id 
+
+
+	/**==============================================================
+	 * Deletes a product by its ID.
+	 * @param Id The ID of the product to delete
+	 * @return A string indicating the success of the operation
+	==============================================================*/
 	@DeleteMapping("/deleteProduct/{Id}")
 	public String deleteProduct(@PathVariable int Id) {
 		productService.deleteProduct(Id);
 		return "Product deleted from the database";
 	}
-	
-	
-	
-	// Deletes all products
+
+
+
+	/**==============================================================
+	 * Deletes all products from the database.
+	 * @return A string indicating the success of the operation
+	============================================================== */
 	@DeleteMapping("/deleteAll")
 	public  String deleteAllProduct() {
 		productService.deleteAllProduct();
 		return "All products deleted from the database";
 	}
-	
-	// endpoint for  select products with particular category
+
+
+	/**==============================================================
+	 * Retrieves products with a particular category.
+	 * @param category The name of the category
+	 * @return A list of Product objects belonging to the specified category
+	==============================================================*/
 		@GetMapping("/getProductsbyCategory/{category}")
 		public List<Product> getProductByCategory(@PathVariable String category) {
 			return productService.getProductByCategory(category);
 		}
-		
-		
-		//endpoint for getting products by pagination
-		
+
+
+	/**==============================================================
+	 * Retrieves products by pagination.
+	 * @param pageNo The page number
+	 * @param pageSize The size of each page
+	 * @return A Page object containing products for the specified page
+	 *==============================================================*/
 		@GetMapping("/getProductsByPagination")
 		public Page<Product> getProductByPages( @RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "5") Integer pageSize)
 		{
 			return productService.getProductByPages(pageNo,pageSize);
 		}
-		
-		
-		
-		
-		
-		// category related  end points
-		
-		
-	   
-	     // adding a new category to the db
+
+
+
+	/**=====================================
+	 *** Category entity related endpoints .**
+	 ========================================*/
+
+
+	/**==============================================================
+	 * Adds a new category to the database.
+	 * @param categoryDTO The CategoryDTO containing details of the category to be added
+	 * @return A string indicating the success of the operation
+	 *==============================================================*/
 	     @PostMapping("/addCategory")
 	     public String addCategory(@RequestBody CategoryDTO categoryDTO){
 	        return productService.saveCategory(categoryDTO);
@@ -110,7 +154,10 @@ public class ProductController {
 
 
 
-	     
+	/**==============================================================
+	 * Retrieves all categories from the database.
+	 * @return A list of Category objects representing all categories
+	 *==============================================================*/
 	     @GetMapping("/getAllCategory")
 	     public List<Category> getAll(){
 	         return  productService.getAllCategory();

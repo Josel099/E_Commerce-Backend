@@ -6,7 +6,8 @@ import com.livares.product.Dto.UserDTO;
 public interface UserService  {
 
 	// register a new user to the database 
-	public String registerUser(UserDTO userDTO);
-	
-	public String loginUser(LoginDTO loginDTO);
+    String registerUser(UserDTO userDTO);
+
+	// login a user
+	String loginUser(LoginDTO loginDTO);
 }

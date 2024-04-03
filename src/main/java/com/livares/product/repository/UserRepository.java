@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-
+	// * Retrieves an Optional User entity object by the specified username.
 	Optional<User> findByUsername(String username);
 
 }

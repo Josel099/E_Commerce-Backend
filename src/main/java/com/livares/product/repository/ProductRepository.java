@@ -12,12 +12,34 @@ import com.livares.product.model.Product;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
-
+	/**=============================================================
+	 * Retrieves a list of products belonging to a specific category.
+	 * @param categoryName The name of the category
+	 * @return A list of products belonging to the specified category
+	================================================================= */
 	@Query(nativeQuery = true, value = "SELECT p.* FROM product p JOIN category c ON p.category_id = c.id WHERE c.category_name = :categoryName")
 	List<Product> findProductByCategory(@Param("categoryName") String categoryName);
 
+	/**===================================================================================
+	 * Retrieves a list of ProductDTO objects representing cart items for a specific user.
+	 * @param userId The ID of the user
+	 * @return A list of ProductDTO objects representing cart items for the specified user
+	 =======================================================================================*/
+	@Query(value = "SELECT new com.livares.product.Dto.ProductDTO(p.title,p.img,p.description,p.price,p.quantity,p.category.Id)"
+			+ "FROM Product p JOIN  com.livares.product.model.UserProductCart upc"
+			+ " ON p.Id = upc.product.Id"
+			+ " WHERE upc.user.id = :userId")
+	List<ProductDTO> getCartItemsByUserId(@Param("userId") int userId);
+
+
+
+
+
+
+
+// hibernet query for getting products belonging to a specific category
 	/**
-	 * @Query("SELECT new
+	  * @Query("SELECT new
 	 * com.livares.product.Dto.ProductDTO(p.title,p.image,p.description,p.price,p.quantity,c.categoryName,c.categoryId)
 	 * FROM Product p " + "JOIN Category c ON p.category.id = c.id " + "WHERE c.name
 	 * = :category") List<ProductDTO> findProductByCategory1(@Param("category")
@@ -26,17 +48,10 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
 	// native query for getting cart items of a particular user
 	/**
-	 * @Query(value="SELECT
+	 	 * @Query(value="SELECT
 	 * p.title,p.img,p.description,p.price,p.quantity,p.category_id" + "FROM product
 	 * p JOIN user_product_cart upa " + " ON p.Id = upa.product_id " + "WHERE
 	 * upa.user_id = :userId", nativeQuery = true) List<Product>
 	 * getCartItemsByUserId(@Param("userId") int userId);
 	 */
-
-	@Query(value = "SELECT new com.livares.product.Dto.ProductDTO(p.title,p.img,p.description,p.price,p.quantity,p.category.id)"
-			+ "FROM Product p JOIN  com.livares.product.model.UserProductCart upc" + " ON p.id = upc.product.id"
-			+ " WHERE upc.user.id = :userId")
-
-	List<ProductDTO> getCartItemsByUserId(@Param("userId") int userId);
-
 }

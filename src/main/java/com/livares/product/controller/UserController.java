@@ -19,17 +19,26 @@ import com.livares.product.service.UserService;
 public class UserController {
 	@Autowired
 	public UserService userService;
-	
+
+	/**==============================================================
+	 * Registers a new user based on the provided UserDTO.
+	 * @param userDTO The UserDTO containing user registration details
+	 * @return A string indicating the registration status
+	  =================================================================*/
 	@PostMapping("/registerUser")
 	public String registerUser(@RequestBody UserDTO userDTO) {
 		return userService.registerUser(userDTO);
 	}
-	
+
+	/**==============================================================
+	 * Authenticates a user based on the provided LoginDTO.
+	 * @param loginDTO The LoginDTO containing user login credentials(username and password)
+	 * @return ResponseEntity containing a string indicating the login status
+	====================================================================*/
 	@GetMapping("/login")
 	public ResponseEntity<String> authenticateUser(LoginDTO loginDTO){
 		String reString = userService.loginUser(loginDTO);
 		return ResponseEntity.ok(reString);
-		
 	}
 	
 }

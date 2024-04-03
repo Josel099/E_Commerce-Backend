@@ -13,7 +13,14 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity(debug = false)
 public class SecurityConfig {
 
-	// csrf disable because when spring boot starting the spring boot automatically prevent  csrf , which lead to an error in security.  
+    /**
+     * Configures the security filter chain to disable CSRF protection.
+     * CSRF protection is disabled because Spring Boot automatically enables CSRF protection by default,
+     * which can cause errors in security configurations.
+     * @param http The HttpSecurity object to configure
+     * @return The configured SecurityFilterChain object
+     * @throws Exception If an error occurs while configuring the security filter chain
+     */
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable());

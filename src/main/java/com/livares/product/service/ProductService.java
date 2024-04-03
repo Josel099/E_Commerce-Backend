@@ -10,48 +10,51 @@ import com.livares.product.Dto.ProductDTO;
 import com.livares.product.model.Category;
 import com.livares.product.model.Product;
 
-/**===================================================================
- * Interface for ProductService.
- * Defines methods for performing CRUD operations on Product entities.
- =====================================================================*/
 public interface ProductService {
 
+
+    /**===================================================================
+     * Defines methods for performing CRUD operations on Product entities.
+     =====================================================================*/
+
 	//Saves a new product.
-	public void saveProduct(ProductDTO productDTO );
+    void saveProduct(ProductDTO productDTO);
 
 	//Save multiple product
-	public void saveAllProducts(List<ProductDTO> productDTOList);
+    void saveAllProducts(List<ProductDTO> productDTOList);
 
 	//Retrieves all products.
-	public List<Product> getAllProducts();
+    List<Product> getAllProducts();
 	
 	//Retrieves a product by its ID.
-	public Optional<Product> getProductById(int Id);
+    Optional<Product> getProductById(int Id);
 
 	//Updates an existing product.
-	public Product updateProduct(int Id,ProductDTO productDTO) ;
+    Product updateProduct(int Id, ProductDTO productDTO) ;
 
 	//Deletes a product by its ID.
-	public void deleteProduct(int Id);
+    void deleteProduct(int Id);
 
 	//Deletes all products.
-	public void deleteAllProduct();
+    void deleteAllProduct();
 	
 	//get products by it's category
-	public List<Product> getProductByCategory(String category);
-	
-	
-	
-	// categoriea methods
-	
+    List<Product> getProductByCategory(String category);
+
+
+
+    /**===================================================================
+     * Defines methods for performing CRUD operations on Category entities.
+     =====================================================================*/
+
 	// adding a new category
-	public String saveCategory(CategoryDTO categoryDTO);
+    String saveCategory(CategoryDTO categoryDTO);
 
 
 	//displaying all categories in the database
-	public List<Category> getAllCategory();
+    List<Category> getAllCategory();
 
 	
-	// get product by pagable request 
-	public Page<Product> getProductByPages(int pageNo, int pageSize);
+	// get product list by the pageable request
+    Page<Product> getProductByPages(int pageNo, int pageSize);
 }
