@@ -12,6 +12,8 @@ import com.livares.product.repository.CategoryRepository;
 import com.livares.product.repository.ProductRepository;
 import com.livares.product.service.ProductServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.livares.product.model.Product;
@@ -148,6 +150,20 @@ public class ProductServiceImp implements ProductServiceInterface {
 	}
 	
 	
+
+
+	@Override
+    public List<Product> getProductByPages(int pageNo, int pageSize) {
+
+        //create pagerequest object
+        PageRequest pageRequest = PageRequest.of(pageNo, pageSize);
+        //pass it to repos
+        Page<Product> pagingUser = productRepository.findAll(pageRequest);
+        //pagingUser.hasContent(); -- to check pages are there or not
+        return pagingUser.getContent();
+    }
+	
+	
 	
 	// category service implementations 
 
@@ -164,7 +180,9 @@ public class ProductServiceImp implements ProductServiceInterface {
 	    public List<Category> getAllCategory() {
 	        return categoryRepository.findAll();
 	    }
-	
+
+
+			
 }
 
 

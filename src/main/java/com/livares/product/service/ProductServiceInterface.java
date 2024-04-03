@@ -48,4 +48,8 @@ public interface ProductServiceInterface {
 
 	//displaying all categories in the database
 	public List<Category> getAllCategory();
+
+	
+	// get product by pagable request 
+	public List<Product> getProductByPages(int pageNo, int pageSize);
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.livares.product.model.Category;
@@ -83,10 +84,17 @@ public class ProductController {
 	// endpoint for  select products with particular category
 		@GetMapping("/getProductsbyCategory/{category}")
 		public List<Product> getProductByCategory(@PathVariable String category) {
-			System.out.println(category);
 			return productServiceInterface.getProductByCategory(category);
 		}
 		
+		
+		//endpoint for getting products by pagination
+		
+		@GetMapping("/getProductsByPagination")
+		public List<Product> getProductByPages( @RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "5") Integer pageSize)
+		{
+			return productServiceInterface.getProductByPages(pageNo,pageSize);
+		}
 		
 		
 		// category controller endpoints
