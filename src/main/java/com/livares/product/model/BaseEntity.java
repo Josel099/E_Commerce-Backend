@@ -18,6 +18,8 @@ public class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int Id;
+    
+  
 
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime createdTime = LocalDateTime.now(); // Set default value to current time

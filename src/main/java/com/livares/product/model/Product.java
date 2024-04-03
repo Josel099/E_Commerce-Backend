@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
@@ -16,6 +17,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Product extends BaseEntity {
 
+	
 	@Column(name = "title")
 	private String title;
 

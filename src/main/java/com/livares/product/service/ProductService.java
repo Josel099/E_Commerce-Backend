@@ -14,7 +14,7 @@ import com.livares.product.model.Product;
  * Interface for ProductService.
  * Defines methods for performing CRUD operations on Product entities.
  =====================================================================*/
-public interface ProductServiceInterface {
+public interface ProductService {
 
 	//Saves a new product.
 	public void saveProduct(ProductDTO productDTO );

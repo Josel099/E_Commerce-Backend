@@ -21,7 +21,6 @@ public class UserServiceImp implements UserService {
 	private UserRepository userRepository;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-
 	// Implementation for registering the user
 	@Override
 	public String registerUser(UserDTO userDTO) {

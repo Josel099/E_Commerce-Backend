@@ -10,7 +10,7 @@ import com.livares.product.Dto.ProductDTO;
 import com.livares.product.model.Category;
 import com.livares.product.repository.CategoryRepository;
 import com.livares.product.repository.ProductRepository;
-import com.livares.product.service.ProductServiceInterface;
+import com.livares.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,7 +25,7 @@ import org.webjars.NotFoundException;
  * Provides methods to perform CRUD operations on Product entities.
  ===================================================================*/
 @Service
-public class ProductServiceImp implements ProductServiceInterface {
+public class ProductServiceImp implements ProductService {
 	
 	@Autowired
 	private ProductRepository productRepository;
@@ -145,8 +145,8 @@ public class ProductServiceImp implements ProductServiceInterface {
 	 * @return 
 	 =============================================*/
 	@Override
-	public List<Product> getProductByCategory(String category) {
-		return productRepository.findProductByCategory(category);
+	public List<Product> getProductByCategory(String categoryName) {
+		return productRepository.findProductByCategory(categoryName);
 	}
 	
 	
@@ -183,7 +183,10 @@ public class ProductServiceImp implements ProductServiceInterface {
 	        return categoryRepository.findAll();
 	    }
 
-
+	    
+	    
+	    
+	    
 			
 }
 

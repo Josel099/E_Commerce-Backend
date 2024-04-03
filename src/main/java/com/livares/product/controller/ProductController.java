@@ -19,7 +19,7 @@ import com.livares.product.Dto.CategoryDTO;
 import com.livares.product.Dto.ProductDTO;
 import com.livares.product.model.Category;
 import com.livares.product.model.Product;
-import com.livares.product.service.ProductServiceInterface;
+import com.livares.product.service.ProductService;
 
 
 
@@ -28,48 +28,45 @@ import com.livares.product.service.ProductServiceInterface;
 public class ProductController {
 
 	@Autowired
-	private ProductServiceInterface productServiceInterface;
-	
-	 
-	
+	private ProductService productService;
 	 // Saves a product to the database
      	@PostMapping("/save")
 	public String saveProduct(@RequestBody ProductDTO productDTO) {
-		productServiceInterface.saveProduct(productDTO);
+		productService.saveProduct(productDTO);
 		return "Product saved successfully";
 	}
 
    // endpoint for saving multiple product at a time
 	@PostMapping("/saveAll")
 	public String saveAllProduct(@RequestBody List<ProductDTO> productDTOList){
-			 productServiceInterface.saveAllProducts(productDTOList);
+			 productService.saveAllProducts(productDTOList);
 			 return "all products saved sucessfully";
 	}
 	
 	 //Retrieves all products from the database.
 	@GetMapping("/getAll")
 	public List<Product> getAllProducts(){
-		return productServiceInterface.getAllProducts();
+		return productService.getAllProducts();
 	}
 	
 	//Retrieves a product by its ID. 
 	@GetMapping("/getById/{Id}")
 	public Optional<Product> getProductById(@PathVariable int Id){
-		return productServiceInterface.getProductById(Id);
+		return productService.getProductById(Id);
 	}
 	
 	
 	 //Updates a product
 	@PutMapping("/updateProduct/{Id}")
 	public Product updateProduct(@PathVariable int Id,@RequestBody ProductDTO productDTO) {
-		return productServiceInterface.updateProduct(Id, productDTO);
+		return productService.updateProduct(Id, productDTO);
 	}
 	
 	
 	// Delete product by Id 
 	@DeleteMapping("/deleteProduct/{Id}")
 	public String deleteProduct(@PathVariable int Id) {
-		productServiceInterface.deleteProduct(Id);
+		productService.deleteProduct(Id);
 		return "Product deleted from the database";
 	}
 	
@@ -78,14 +75,14 @@ public class ProductController {
 	// Deletes all products
 	@DeleteMapping("/deleteAll")
 	public  String deleteAllProduct() {
-		productServiceInterface.deleteAllProduct();
+		productService.deleteAllProduct();
 		return "All products deleted from the database";
 	}
 	
 	// endpoint for  select products with particular category
 		@GetMapping("/getProductsbyCategory/{category}")
 		public List<Product> getProductByCategory(@PathVariable String category) {
-			return productServiceInterface.getProductByCategory(category);
+			return productService.getProductByCategory(category);
 		}
 		
 		
@@ -94,32 +91,33 @@ public class ProductController {
 		@GetMapping("/getProductsByPagination")
 		public Page<Product> getProductByPages( @RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "5") Integer pageSize)
 		{
-			return productServiceInterface.getProductByPages(pageNo,pageSize);
+			return productService.getProductByPages(pageNo,pageSize);
 		}
 		
 		
-		// category controller endpoints
+		
+		
+		
+		// category related  end points
 		
 		
 	   
 	     // adding a new category to the db
 	     @PostMapping("/addCategory")
 	     public String addCategory(@RequestBody CategoryDTO categoryDTO){
-	        return productServiceInterface.saveCategory(categoryDTO);
+	        return productService.saveCategory(categoryDTO);
 	     }
 
-//	     // delete an category by it's Id
-//	     @DeleteMapping("/delete/{Id}")
-//	     public String deleteById(@PathVariable int Id){
-//	         return categoryServiceInterface.deleteCategoryById(Id);
-//	     }
+
 
 	     
 	     @GetMapping("/getAllCategory")
 	     public List<Category> getAll(){
-	         return  productServiceInterface.getAllCategory();
+	         return  productService.getAllCategory();
 	     }
 		
+	     
+	     
 }   
 
 	
