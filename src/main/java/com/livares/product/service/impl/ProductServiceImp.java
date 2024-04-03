@@ -151,7 +151,8 @@ public class ProductServiceImp implements ProductServiceInterface {
 	
 	
 
-
+  
+	// method for returning product list by pagination 
 	@Override
     public List<Product> getProductByPages(int pageNo, int pageSize) {
 

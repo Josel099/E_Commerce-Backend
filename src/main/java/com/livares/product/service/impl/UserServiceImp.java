@@ -32,7 +32,7 @@ public class UserServiceImp implements UserService {
 		user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
 		userRepository.save(user);
-		return "User Registered Sucessfully  ";
+		return "User Registered Sucessfully";
 	}
 
 }
