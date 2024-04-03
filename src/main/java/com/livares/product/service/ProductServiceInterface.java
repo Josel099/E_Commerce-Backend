@@ -3,6 +3,8 @@ package com.livares.product.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+
 import com.livares.product.Dto.CategoryDTO;
 import com.livares.product.Dto.ProductDTO;
 import com.livares.product.model.Category;
@@ -51,5 +53,5 @@ public interface ProductServiceInterface {
 
 	
 	// get product by pagable request 
-	public List<Product> getProductByPages(int pageNo, int pageSize);
+	public Page<Product> getProductByPages(int pageNo, int pageSize);
 }

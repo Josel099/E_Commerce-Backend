@@ -3,9 +3,8 @@ package com.livares.product.controller;
 import java.util.List;
 import java.util.Optional;
 
-import com.livares.product.Dto.CategoryDTO;
-import com.livares.product.Dto.ProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.livares.product.Dto.CategoryDTO;
+import com.livares.product.Dto.ProductDTO;
 import com.livares.product.model.Category;
 import com.livares.product.model.Product;
 import com.livares.product.service.ProductServiceInterface;
@@ -91,7 +92,7 @@ public class ProductController {
 		//endpoint for getting products by pagination
 		
 		@GetMapping("/getProductsByPagination")
-		public List<Product> getProductByPages( @RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "5") Integer pageSize)
+		public Page<Product> getProductByPages( @RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "5") Integer pageSize)
 		{
 			return productServiceInterface.getProductByPages(pageNo,pageSize);
 		}

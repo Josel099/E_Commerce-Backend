@@ -1,13 +1,18 @@
 package com.livares.product.service.impl;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.livares.product.Dto.LoginDTO;
 import com.livares.product.Dto.UserDTO;
 import com.livares.product.model.User;
 import com.livares.product.repository.UserRepository;
 import com.livares.product.service.UserService;
+
+import ch.qos.logback.core.joran.conditional.IfAction;
 
 @Service
 public class UserServiceImp implements UserService {
@@ -34,5 +39,22 @@ public class UserServiceImp implements UserService {
 		userRepository.save(user);
 		return "User Registered Sucessfully";
 	}
-
+	
+	// login user
+	
+	@Override
+	public String loginUser(LoginDTO loginDTO) {
+	
+		Optional<User> user  = userRepository.findByUsername(loginDTO.getUsername());
+		if(user.isPresent()) {
+			String encodedPasword = user.get().getPassword();
+			String inputPassword  = loginDTO.getPassword();
+			Boolean isPwdRight = passwordEncoder.matches(inputPassword,encodedPasword);// checking the input pwd is match with the orginal pwd
+			
+			if(!isPwdRight) return "password is false";
+			else return "user sucessfully logined";
+		}
+		
+		return "username is not exist";
+	}
 }

@@ -154,14 +154,15 @@ public class ProductServiceImp implements ProductServiceInterface {
   
 	// method for returning product list by pagination 
 	@Override
-    public List<Product> getProductByPages(int pageNo, int pageSize) {
+    public Page<Product> getProductByPages(int pageNo, int pageSize) {
 
+		
         //create pagerequest object
         PageRequest pageRequest = PageRequest.of(pageNo, pageSize);
         //pass it to repos
         Page<Product> pagingUser = productRepository.findAll(pageRequest);
         //pagingUser.hasContent(); -- to check pages are there or not
-        return pagingUser.getContent();
+        return pagingUser;
     }
 	
 	
