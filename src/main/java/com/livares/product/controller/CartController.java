@@ -3,11 +3,13 @@ package com.livares.product.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.livares.product.Dto.ProductDTO;
 import com.livares.product.model.Product;
+import com.livares.product.response.ResponseHandler;
 import com.livares.product.service.UserCartService;
 
 @RestController
@@ -24,8 +26,8 @@ public class CartController {
 	 * @return A string indicating the success of adding the product to the cart
 	 *==============================================================*/
 	@PostMapping("/addToCart")
-	public String addToCart(@RequestParam int userId,@RequestParam int productId) {
-		return userCartService.addToCart(userId, productId);
+	public ResponseEntity<Object> addToCart(@RequestParam int userId,@RequestParam int productId) {
+		return ResponseHandler.generateResponse(userCartService.addToCart(userId, productId),HttpStatus.ACCEPTED,null)  ;
 	}
 
 	/**==============================================================
@@ -34,8 +36,8 @@ public class CartController {
 	 * @return A list of ProductDTO objects representing the products in the user's cart
 	 *=================================================================*/
 	@GetMapping("/getcartItemsById/{userId}")
-	public List<ProductDTO> getCartItemsById(@PathVariable int userId){
-		return userCartService.getCartItemsByUserId(userId);
+	public ResponseEntity<Object> getCartItemsById(@PathVariable int userId){
+		return  ResponseHandler.generateResponse("Cart items of User having Id : "+ userId, HttpStatus.OK, userCartService.getCartItemsByUserId(userId)) ;
 		
 	}
 	/**==============================================================
@@ -45,9 +47,7 @@ public class CartController {
 	 * @return A string indicating the success of deleting the product from the cart
 	 *============================================================== */
 	@DeleteMapping("/delete/CartItem")
- 	public String deleteCartItem(@RequestParam int userId, @RequestParam int productId) {
-		return userCartService.deleteCartItem(userId, productId);
+ 	public ResponseEntity<Object> deleteCartItem(@RequestParam int userId, @RequestParam int productId) {
+		return ResponseHandler.generateResponse(userCartService.deleteCartItem(userId, productId), HttpStatus.ACCEPTED,null) ;
  }
-	
-	
 }
