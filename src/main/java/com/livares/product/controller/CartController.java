@@ -2,6 +2,7 @@
 package com.livares.product.controller;
 import java.util.List;
 
+import org.aspectj.weaver.patterns.ThisOrTargetAnnotationPointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,8 @@ public class CartController {
 	@Autowired
 	private UserCartService userCartService;
 
+	ThisOrTargetAnnotationPointcut iThisOrTargetAnnotationPointcut ;
+	
 	/**==============================================================
 	 * Adds a product to the user's cart.
 	 * @param userId The ID of the user
