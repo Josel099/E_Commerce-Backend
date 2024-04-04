@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.livares.product.Dto.LoginDTO;
 import com.livares.product.Dto.UserDTO;
+import com.livares.product.response.ResponseHandler;
 import com.livares.product.service.UserService;
 
 
@@ -26,8 +27,8 @@ public class UserController {
 	 * @return A string indicating the registration status
 	  =================================================================*/
 	@PostMapping("/registerUser")
-	public String registerUser(@RequestBody UserDTO userDTO) {
-		return userService.registerUser(userDTO);
+	public ResponseEntity<Object> registerUser(@RequestBody UserDTO userDTO) {
+		return  ResponseHandler.generateResponse(userService.registerUser(userDTO), HttpStatus.ACCEPTED, userDTO)  ;
 	}
 
 	/**==============================================================
@@ -36,9 +37,9 @@ public class UserController {
 	 * @return ResponseEntity containing a string indicating the login status
 	====================================================================*/
 	@GetMapping("/login")
-	public ResponseEntity<String> authenticateUser(LoginDTO loginDTO){
-		String reString = userService.loginUser(loginDTO);
-		return ResponseEntity.ok(reString);
+	public ResponseEntity<Object> authenticateUser(LoginDTO loginDTO){
+		String responseString = userService.loginUser(loginDTO);
+		return ResponseHandler.generateResponse(responseString,HttpStatus.OK,null);
 	}
 	
 }
