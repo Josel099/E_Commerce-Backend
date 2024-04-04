@@ -2,6 +2,7 @@ package com.livares.product.service.impl;
 
 import com.livares.product.Dto.CategoryDTO;
 import com.livares.product.Dto.ProductDTO;
+import com.livares.product.exception.CustomException;
 import com.livares.product.model.Category;
 import com.livares.product.model.Product;
 import com.livares.product.repository.CategoryRepository;
@@ -38,7 +39,7 @@ public class ProductServiceImp implements ProductService {
      * Saves a new product.
      *
      * @param productDTO The product to be saved.
-     *                   =================================================
+     *=================================================
      */
     @Override
     public void saveProduct(ProductDTO productDTO) {
@@ -53,7 +54,7 @@ public class ProductServiceImp implements ProductService {
      * and then saving them in the database.
      *
      * @param productDTOList A list of ProductDTO objects to be saved in the Database
-     *                       =================================================================================
+     *=================================================================================
      */
     @Override
     public void saveAllProducts(List<ProductDTO> productDTOList) {
@@ -72,14 +73,16 @@ public class ProductServiceImp implements ProductService {
      * ====================================================================
      */
     private Product convertToProduct(ProductDTO productDTO) {
-        Category category = categoryRepository.findById(productDTO.getCategoryId()).orElseThrow(() -> new NotFoundException("Category not found"));
-        Product product = new Product();
-        product.setTitle(productDTO.getTitle());
-        product.setImg(productDTO.getImg());
-        product.setDescription(productDTO.getDescription());
-        product.setPrice(productDTO.getPrice());
-        product.setQuantity(productDTO.getQuantity());
-        product.setCategory(category); // Set the Category foreignKey
+            Category category = categoryRepository.findById(productDTO.getCategoryId()).orElseThrow(() -> new CustomException("Category not found","404"));
+            Product product = new Product();
+            product.setTitle(productDTO.getTitle());
+            product.setImg(productDTO.getImg());
+            product.setDescription(productDTO.getDescription());
+            product.setPrice(productDTO.getPrice());
+            product.setQuantity(productDTO.getQuantity());
+            product.setCategory(category); // Set the Category foreignKey
+    		
+
         return product;
     }
 

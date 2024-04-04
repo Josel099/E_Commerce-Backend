@@ -15,10 +15,10 @@ public interface ProductService {
 
     /**===================================================================
      * Defines methods for performing CRUD operations on Product entities.
-     =====================================================================*/
+     =====================================================================
+     * @return */
 
-	//Saves a new product.
-    void saveProduct(ProductDTO productDTO);
+	void saveProduct(ProductDTO productDTO);
 
 	//Save multiple product
     void saveAllProducts(List<ProductDTO> productDTOList);
