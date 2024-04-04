@@ -22,6 +22,8 @@ public class CustomException extends RuntimeException {
     public CustomException(String message) {
         super(message);
     }
+    
+}
 
     public CustomException(Integer error, String message) {
         super(message);

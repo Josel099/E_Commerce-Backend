@@ -1,5 +1,15 @@
 package com.livares.product.service.impl;
 
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
 import com.livares.product.Dto.CategoryDTO;
 import com.livares.product.Dto.ProductDTO;
 import com.livares.product.exception.CustomException;
@@ -9,16 +19,6 @@ import com.livares.product.model.Product;
 import com.livares.product.repository.CategoryRepository;
 import com.livares.product.repository.ProductRepository;
 import com.livares.product.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
-
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 /**
@@ -91,33 +91,38 @@ public class ProductServiceImp implements ProductService {
     
 
     /**
-     * ==================================
-     * Retrieves all products.
-     *
-     * @return A list of all products.
-     * ====================================
+     * Retrieves all products from the database.
+     * @return A list of products.
+     * @throws CustomException if the database does not contain any products.
      */
     @Override
     public List<Product> getAllProducts() {
-    	List<Product> productList = productRepository.findAll();
-        if(productList.isEmpty()) {
-        	throw new CustomException(ErrorCode.NOT_FOUND,"database is empty");
+        try {
+            List<Product> products = productRepository.findAll();
+            if (products.isEmpty()) {
+                throw new CustomException(ErrorCode.NOT_FOUND, "No products found in the database.");
+            }
+            return products;
+        } catch (Exception ex) {
+            // Log the exception or handle it accordingly
+            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR, "An error occurred while retrieving products.");
         }
-    	return productRepository.findAll();
     }
 
+
+    
     /**
-     * =======================================================================
-     * Retrieves a product by its ID.
-     *
-     * @param Id The ID of the product to retrieve.
-     * @return An Optional containing the product if found, or empty otherwise.
-     * ===========================================================================
+     * Retrieves a product from the database by its ID.
+     * 
+     * @param id The ID of the product to retrieve.
+     * @return An Optional containing the product if found, otherwise throws a CustomException.
+     * @throws CustomException Thrown if the product with the specified ID is not found.
      */
     @Override
-    public Optional<Product> getProductById(int Id) {
-    		return productRepository.findById(Id).orElseThrow(()=>new CustomException(ErrorCode.NOT_FOUND,"user not exist")); 
+    public Optional<Product> getProductById(int id) {
+        return Optional.of(productRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, "Product not found with ID: " + id)));
     }
+
 
     /**
      * ===============================================================================
@@ -135,15 +140,16 @@ public class ProductServiceImp implements ProductService {
     	try {
     		 Optional<Category> category = categoryRepository.findById(productDTO.getCategoryId());
 
-    	        Product productToUpdate = productRepository.findById(Id).orElseThrow();
-    	        productToUpdate.setTitle(productDTO.getTitle());
-    	        productToUpdate.setImg(productDTO.getImg());
-    	        productToUpdate.setDescription(productDTO.getDescription());
-    	        productToUpdate.setPrice(productDTO.getPrice());
-    	        productToUpdate.setQuantity(productDTO.getQuantity());
-    	        productToUpdate.setCategory(category.get()); // Set the Category association
+    	        Optional<Product> productToUpdate = productRepository.findById(Id);
+    	        Product product = productToUpdate.get();
+    	        product.setTitle(productDTO.getTitle());
+    	        product.setImg(productDTO.getImg());
+    	        product.setDescription(productDTO.getDescription());
+    	        product.setPrice(productDTO.getPrice());
+    	        product.setQuantity(productDTO.getQuantity());
+    	        product.setCategory(category.get()); // Set the Category association
     	        // Save the updated Product entity back to the database
-    	        return productRepository.save(productToUpdate);
+    	        return productRepository.save(product);
 		} catch (Exception e) {
 			
 			throw new CustomException(ErrorCode.NOT_FOUND,"category is not found");
@@ -152,6 +158,9 @@ public class ProductServiceImp implements ProductService {
     }
 
 
+    
+    
+    
     /**
      * ==========================================
      * Deletes a product by its ID.
@@ -161,7 +170,11 @@ public class ProductServiceImp implements ProductService {
      */
     @Override
     public void deleteProduct(int Id) {
-        productRepository.deleteById(Id);
+    	try {
+    		 productRepository.deleteById(Id);
+		} catch (Exception e) {
+			throw new CustomException(ErrorCode.NOT_FOUND,"product is not in the database");
+		}
     }
 
     /**
@@ -171,7 +184,11 @@ public class ProductServiceImp implements ProductService {
      */
     @Override
     public void deleteAllProduct() {
-        productRepository.deleteAll();
+        try {
+        	productRepository.deleteAll();
+		} catch (Exception e) {
+			throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR,"operation can't be done , database may be empty");		}
+    	
     }
 
 
@@ -182,9 +199,15 @@ public class ProductServiceImp implements ProductService {
      * @param categoryName The category name of the products to fetch.
      * @return =============================================
      */
+    
     @Override
     public List<Product> getProductByCategory(String categoryName) {
-        return productRepository.findProductByCategory(categoryName);
+    	try {
+    		return productRepository.findProductByCategory(categoryName);
+		} catch (Exception e) {
+			throw new CustomException(ErrorCode.BAD_REQUEST,"category is not found");
+		}
+        
     }
 
 
@@ -200,15 +223,20 @@ public class ProductServiceImp implements ProductService {
      */
     @Override
     public Page<Product> getProductByPages(int pageNo, int pageSize) {
+    	
+    	try {
+    		   //create pagerequest object
+            PageRequest pageRequest = PageRequest.of(pageNo, pageSize);
+            //pass it to repos
+            Page<Product> pagingUser = productRepository.findAll(pageRequest);
 
-        //create pagerequest object
-        PageRequest pageRequest = PageRequest.of(pageNo, pageSize);
-        //pass it to repos
-        Page<Product> pagingUser = productRepository.findAll(pageRequest);
+            //pagingUser.hasContent(); -- to check pages are there or not
 
-        //pagingUser.hasContent(); -- to check pages are there or not
-
-        return pagingUser;
+            return pagingUser;
+		} catch (Exception e) {
+		throw new CustomException(ErrorCode.METHOD_NOT_SUPPORTED,"Internal error");
+		}
+     
     }
 
 
@@ -227,10 +255,15 @@ public class ProductServiceImp implements ProductService {
      */
     @Override
     public void saveCategory(CategoryDTO categoryDTO) {
-        Category category = new Category();
-        String name = categoryDTO.getCategoryName();
-        category.setCategoryName(name);
-        categoryRepository.save(category);
+    	try {
+            Category category = new Category();
+            String name = categoryDTO.getCategoryName();
+            category.setCategoryName(name);
+            categoryRepository.save(category);
+		} catch (Exception e) {
+			throw new CustomException(ErrorCode.BAD_REQUEST," request failed");
+		}
+
     }
 
     /**
@@ -242,7 +275,12 @@ public class ProductServiceImp implements ProductService {
      */
     @Override
     public List<Category> getAllCategory() {
-        return categoryRepository.findAll();
+    	try {
+    		 return categoryRepository.findAll();
+		} catch (Exception e) {
+			throw new CustomException(ErrorCode.BAD_REQUEST,"request failed");
+		}
+       
     }
 
 }
