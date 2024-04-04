@@ -48,7 +48,7 @@ public interface ProductService {
      =====================================================================*/
 
 	// adding a new category
-    String saveCategory(CategoryDTO categoryDTO);
+    void saveCategory(CategoryDTO categoryDTO);
 
 
 	//displaying all categories in the database
