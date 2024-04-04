@@ -2,9 +2,12 @@ package com.livares.product.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.PrimitiveIterator.OfDouble;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +22,7 @@ import com.livares.product.Dto.CategoryDTO;
 import com.livares.product.Dto.ProductDTO;
 import com.livares.product.model.Category;
 import com.livares.product.model.Product;
+import com.livares.product.response.ResponseHandler;
 import com.livares.product.service.ProductService;
 
 
@@ -36,9 +40,9 @@ public class ProductController {
 	 * @return A string indicating the success of the operation
 	==============================================================*/
      	@PostMapping("/save")
-	public String saveProduct(@RequestBody ProductDTO productDTO) {
-		productService.saveProduct(productDTO);
-		return "Product saved successfully";
+	public ResponseEntity<Object> saveProduct(@RequestBody ProductDTO productDTO) {
+     		productService.saveProduct(productDTO);
+		return  ResponseHandler.generateResponse("Product saved successfully",HttpStatus.ACCEPTED, productDTO);
 	}
 
 
@@ -48,9 +52,9 @@ public class ProductController {
 	 * @return A string indicating the success of the operation
 	==================================================================*/
 	@PostMapping("/saveAll")
-	public String saveAllProduct(@RequestBody List<ProductDTO> productDTOList){
+	public ResponseEntity<Object> saveAllProduct(@RequestBody List<ProductDTO> productDTOList){
 			 productService.saveAllProducts(productDTOList);
-			 return "all products saved sucessfully";
+			 return ResponseHandler.generateResponse("All products saved sucessfully",HttpStatus.ACCEPTED, productDTOList);
 	}
 
 	/**==============================================================
@@ -58,8 +62,8 @@ public class ProductController {
 	 * @return A list of Product objects representing all products in the database
 	==============================================================*/
 	@GetMapping("/getAll")
-	public List<Product> getAllProducts(){
-		return productService.getAllProducts();
+	public ResponseEntity<Object> getAllProducts(){
+		return ResponseHandler.generateResponse("List of products in the database", HttpStatus.OK, productService.getAllProducts()); 
 	}
 
 
@@ -70,8 +74,8 @@ public class ProductController {
 	 * @return An Optional containing the Product object if found, or empty if not found
 	==============================================================*/
 	@GetMapping("/getById/{Id}")
-	public Optional<Product> getProductById(@PathVariable int Id){
-		return productService.getProductById(Id);
+	public ResponseEntity<Object> getProductById(@PathVariable int Id){
+		return ResponseHandler.generateResponse("Details of product having  ID : "+Id, HttpStatus.OK, productService.getProductById(Id));
 	}
 
 
@@ -83,8 +87,8 @@ public class ProductController {
 	 * @return The updated Product object
 	 * ==============================================================*/
 	 	@PutMapping("/updateProduct/{Id}")
-	public Product updateProduct(@PathVariable int Id,@RequestBody ProductDTO productDTO) {
-		return productService.updateProduct(Id, productDTO);
+	public ResponseEntity<Object> updateProduct(@PathVariable int Id,@RequestBody ProductDTO productDTO) {
+		return ResponseHandler.generateResponse("Product Updated Sucessfully", HttpStatus.ACCEPTED,productService.updateProduct(Id, productDTO));
 	}
 
 
@@ -94,9 +98,9 @@ public class ProductController {
 	 * @return A string indicating the success of the operation
 	==============================================================*/
 	@DeleteMapping("/deleteProduct/{Id}")
-	public String deleteProduct(@PathVariable int Id) {
+	public ResponseEntity<Object> deleteProduct(@PathVariable int Id) {
 		productService.deleteProduct(Id);
-		return "Product deleted from the database";
+		return ResponseHandler.generateResponse("Product deleted from the database",HttpStatus.OK,null) ;
 	}
 
 
@@ -106,9 +110,9 @@ public class ProductController {
 	 * @return A string indicating the success of the operation
 	============================================================== */
 	@DeleteMapping("/deleteAll")
-	public  String deleteAllProduct() {
+	public  ResponseEntity<Object> deleteAllProduct() {
 		productService.deleteAllProduct();
-		return "All products deleted from the database";
+		return ResponseHandler.generateResponse("All Products deleted from the database",HttpStatus.OK,null);
 	}
 
 
@@ -118,8 +122,8 @@ public class ProductController {
 	 * @return A list of Product objects belonging to the specified category
 	==============================================================*/
 		@GetMapping("/getProductsbyCategory/{category}")
-		public List<Product> getProductByCategory(@PathVariable String category) {
-			return productService.getProductByCategory(category);
+		public ResponseEntity<Object> getProductByCategory(@PathVariable String category) {
+			return  ResponseHandler.generateResponse("All Product of  Category:"+category, HttpStatus.OK, productService.getProductByCategory(category));
 		}
 
 
@@ -130,9 +134,10 @@ public class ProductController {
 	 * @return A Page object containing products for the specified page
 	 *==============================================================*/
 		@GetMapping("/getProductsByPagination")
-		public Page<Product> getProductByPages( @RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "5") Integer pageSize)
+		public ResponseEntity<Object> getProductByPages( @RequestParam(defaultValue = "0") Integer pageNo, @RequestParam(defaultValue = "5") Integer pageSize)
 		{
-			return productService.getProductByPages(pageNo,pageSize);
+			return  ResponseHandler.generateResponse(" list of product in Page NO :"+pageNo, HttpStatus.OK,  productService.getProductByPages(pageNo,pageSize)) ;
+			
 		}
 
 
@@ -148,8 +153,8 @@ public class ProductController {
 	 * @return A string indicating the success of the operation
 	 *==============================================================*/
 	     @PostMapping("/addCategory")
-	     public String addCategory(@RequestBody CategoryDTO categoryDTO){
-	        return productService.saveCategory(categoryDTO);
+	     public ResponseEntity<Object> addCategory(@RequestBody CategoryDTO categoryDTO){
+	        return  ResponseHandler.generateResponse("category added sucessfully",HttpStatus.ACCEPTED,null) ;
 	     }
 
 
@@ -159,8 +164,8 @@ public class ProductController {
 	 * @return A list of Category objects representing all categories
 	 *==============================================================*/
 	     @GetMapping("/getAllCategory")
-	     public List<Category> getAll(){
-	         return  productService.getAllCategory();
+	     public ResponseEntity<Object> getAll(){
+	         return ResponseHandler.generateResponse("List of All Available Categories",HttpStatus.OK, productService.getAllCategory());
 	     }
 		
 	     

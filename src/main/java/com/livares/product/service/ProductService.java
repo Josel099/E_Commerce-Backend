@@ -15,10 +15,10 @@ public interface ProductService {
 
     /**===================================================================
      * Defines methods for performing CRUD operations on Product entities.
-     =====================================================================*/
+     =====================================================================
+     * @return */
 
-	//Saves a new product.
-    void saveProduct(ProductDTO productDTO);
+	void saveProduct(ProductDTO productDTO);
 
 	//Save multiple product
     void saveAllProducts(List<ProductDTO> productDTOList);
@@ -48,7 +48,7 @@ public interface ProductService {
      =====================================================================*/
 
 	// adding a new category
-    String saveCategory(CategoryDTO categoryDTO);
+    void saveCategory(CategoryDTO categoryDTO);
 
 
 	//displaying all categories in the database

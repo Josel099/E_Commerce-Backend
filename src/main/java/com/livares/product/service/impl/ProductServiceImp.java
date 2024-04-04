@@ -2,6 +2,8 @@ package com.livares.product.service.impl;
 
 import com.livares.product.Dto.CategoryDTO;
 import com.livares.product.Dto.ProductDTO;
+import com.livares.product.exception.CustomException;
+import com.livares.product.exception.ErrorCode;
 import com.livares.product.model.Category;
 import com.livares.product.model.Product;
 import com.livares.product.repository.CategoryRepository;
@@ -36,9 +38,8 @@ public class ProductServiceImp implements ProductService {
     /**
      * ==============================================
      * Saves a new product.
-     *
      * @param productDTO The product to be saved.
-     *                   =================================================
+     *=================================================
      */
     @Override
     public void saveProduct(ProductDTO productDTO) {
@@ -53,7 +54,7 @@ public class ProductServiceImp implements ProductService {
      * and then saving them in the database.
      *
      * @param productDTOList A list of ProductDTO objects to be saved in the Database
-     *                       =================================================================================
+     *=================================================================================
      */
     @Override
     public void saveAllProducts(List<ProductDTO> productDTOList) {
@@ -72,17 +73,22 @@ public class ProductServiceImp implements ProductService {
      * ====================================================================
      */
     private Product convertToProduct(ProductDTO productDTO) {
-        Category category = categoryRepository.findById(productDTO.getCategoryId()).orElseThrow(() -> new NotFoundException("Category not found"));
-        Product product = new Product();
-        product.setTitle(productDTO.getTitle());
-        product.setImg(productDTO.getImg());
-        product.setDescription(productDTO.getDescription());
-        product.setPrice(productDTO.getPrice());
-        product.setQuantity(productDTO.getQuantity());
-        product.setCategory(category); // Set the Category foreignKey
-        return product;
+    	try {
+    		Optional<Category> category = categoryRepository.findById(productDTO.getCategoryId());
+            Product product = new Product();
+            product.setTitle(productDTO.getTitle());
+            product.setImg(productDTO.getImg());
+            product.setDescription(productDTO.getDescription());
+            product.setPrice(productDTO.getPrice());
+            product.setQuantity(productDTO.getQuantity());
+            product.setCategory(category.get()); // Set the Category foreignKey
+            return product;
+		} catch (Exception e) {
+			throw new CustomException(ErrorCode.NOT_FOUND,"category not found");
+		}
     }
 
+    
 
     /**
      * ==================================
@@ -93,7 +99,11 @@ public class ProductServiceImp implements ProductService {
      */
     @Override
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    	List<Product> productList = productRepository.findAll();
+        if(productList.isEmpty()) {
+        	throw new CustomException(ErrorCode.NOT_FOUND,"database is empty");
+        }
+    	return productRepository.findAll();
     }
 
     /**
@@ -106,7 +116,7 @@ public class ProductServiceImp implements ProductService {
      */
     @Override
     public Optional<Product> getProductById(int Id) {
-        return productRepository.findById(Id);
+    		return productRepository.findById(Id).orElseThrow(()=>new CustomException(ErrorCode.NOT_FOUND,"user not exist")); 
     }
 
     /**
@@ -117,21 +127,28 @@ public class ProductServiceImp implements ProductService {
      * @param productDTO The updated product details.
      * @return The updated product.
      * @throws NoSuchElementException if the product with the specified ID is not found.
-     *                                ==================================================================================
+     * ==================================================================================
      */
     @Override
     public Product updateProduct(int Id, ProductDTO productDTO) {
-        Category category = categoryRepository.findById(productDTO.getCategoryId()).orElseThrow(() -> new NotFoundException("Category not found"));
+    	
+    	try {
+    		 Optional<Category> category = categoryRepository.findById(productDTO.getCategoryId());
 
-        Product productToUpdate = productRepository.findById(Id).orElseThrow();
-        productToUpdate.setTitle(productDTO.getTitle());
-        productToUpdate.setImg(productDTO.getImg());
-        productToUpdate.setDescription(productDTO.getDescription());
-        productToUpdate.setPrice(productDTO.getPrice());
-        productToUpdate.setQuantity(productDTO.getQuantity());
-        productToUpdate.setCategory(category); // Set the Category association
-        // Save the updated Product entity back to the database
-        return productRepository.save(productToUpdate);
+    	        Product productToUpdate = productRepository.findById(Id).orElseThrow();
+    	        productToUpdate.setTitle(productDTO.getTitle());
+    	        productToUpdate.setImg(productDTO.getImg());
+    	        productToUpdate.setDescription(productDTO.getDescription());
+    	        productToUpdate.setPrice(productDTO.getPrice());
+    	        productToUpdate.setQuantity(productDTO.getQuantity());
+    	        productToUpdate.setCategory(category.get()); // Set the Category association
+    	        // Save the updated Product entity back to the database
+    	        return productRepository.save(productToUpdate);
+		} catch (Exception e) {
+			
+			throw new CustomException(ErrorCode.NOT_FOUND,"category is not found");
+		}
+       
     }
 
 
@@ -209,12 +226,11 @@ public class ProductServiceImp implements ProductService {
      * =====================================================================
      */
     @Override
-    public String saveCategory(CategoryDTO categoryDTO) {
+    public void saveCategory(CategoryDTO categoryDTO) {
         Category category = new Category();
         String name = categoryDTO.getCategoryName();
         category.setCategoryName(name);
         categoryRepository.save(category);
-        return "Category Added";
     }
 
     /**

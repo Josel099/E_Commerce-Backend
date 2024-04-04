@@ -1,6 +1,7 @@
 package com.livares.product.service.impl;
 
 import com.livares.product.Dto.ProductDTO;
+import com.livares.product.exception.CustomException;
 import com.livares.product.model.Product;
 import com.livares.product.model.User;
 import com.livares.product.model.UserProductCart;
@@ -39,18 +40,27 @@ public class UserCartServiceImp implements UserCartService {
 
     @Override
     public String addToCart(int userId, int productId) {
-        // Find there exist an  cart entry by userId and productId
+    
+    	// Find there exist an  cart entry by userId and productId
         Integer cartId = userProductCartRepositery.findByUserIdAndProductId(userId, productId);
+        
         if (cartId == null) {
-            User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User not found"));
-            Product product = productRepository.findById(productId).orElseThrow(() -> new NotFoundException("Product not found"));
-            UserProductCart userProductCart = new UserProductCart(user, product);
-            userProductCartRepositery.save(userProductCart);
-            return "product added to the cart sucessfully";
+        
+        	User user = userRepository.findById(userId).orElseThrow(() -> new CustomException("User not found"));
+            
+        	Product product = productRepository.findById(productId).orElseThrow(() -> new NotFoundException("Product not found"));
+            
+        	UserProductCart userProductCart = new UserProductCart(user, product);
+            
+        	userProductCartRepositery.save(userProductCart);
+            
+        	return "product added to the cart sucessfully";
         }
         return "Product already in the cart";
     }
 
+    
+    
 
     /**
      * ==============================================
