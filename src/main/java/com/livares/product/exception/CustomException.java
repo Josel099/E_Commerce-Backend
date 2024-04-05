@@ -23,7 +23,7 @@ public class CustomException extends RuntimeException {
         super(message);
     }
     
-}
+
 
     public CustomException(Integer error, String message) {
         super(message);
