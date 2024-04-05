@@ -23,7 +23,7 @@ import com.livares.product.service.CustomUserDetailsServiceImp;
 public class SecurityConfig {
 	
 	@Autowired
-	private CustomUserDetailsServiceImp customUserDetailsServiceImp;
+	private CustomUserDetailsServiceImp customUserDetailsServiceImp; // creating the bean of this class . 
 	
     /**
      * Configures the security filter chain to disable CSRF protection.
@@ -35,12 +35,14 @@ public class SecurityConfig {
      */
     @Bean
    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http.csrf(csrf -> csrf.disable());
+//        
 //    	  return http.build();
     	
     	
-    	return http.authorizeHttpRequests(registry->{
-    			registry.requestMatchers("/home").permitAll();           
+    	return http
+    			.csrf(csrf -> csrf.disable()) // csrf disabling 
+    			.authorizeHttpRequests(registry->{
+    			registry.requestMatchers( "/home","/authentication/**").permitAll();  
     			registry.requestMatchers("/admin/**").hasRole("ADMIN");
     			registry.requestMatchers("/user/**").hasRole("USER");
     			registry.anyRequest().authenticated();  // any request other than the specified one's that's requires authentication. 
@@ -50,21 +52,7 @@ public class SecurityConfig {
     }
     
     
-    // In memory authentication 
-//    @Bean
-//     UserDetailsService userDetailsService() {
-//    	UserDetails normalUser = User.builder()
-//    								.username("user")
-//    								.password("$2a$12$08k7tqqv.q1WI/F6SDtsJesu/niAI.CTY0T2pz/cXeUbnQi1LNREa")
-//    								.roles("USER")
-//    								.build();
-//    	UserDetails adminUser = User.builder()
-//				.username("admin")
-//				.password("$2a$12$4vGptdTAo1NBcWWMw1tQdunepMbztRs/e8eAcW6VZZK2hKPow8aby")
-//				.roles("USER","ADMIN")
-//				.build();
-//    	return new InMemoryUserDetailsManager(normalUser,adminUser);
-//    }
+
     
     
     @Bean
@@ -74,7 +62,7 @@ public class SecurityConfig {
     
     @Bean
     public AuthenticationProvider authenticationProvider() {
-    	DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+    	DaoAuthenticationProvider provider = new DaoAuthenticationProvider(); // for  loading users from the database and use it in the authentication
     	provider.setUserDetailsService(customUserDetailsServiceImp);
     	provider.setPasswordEncoder(passwordEncoder());
     	return provider;
@@ -88,3 +76,31 @@ public class SecurityConfig {
     }
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+//  user and admin data storing in memory for In memory authentication testing
+
+/** @Bean
+UserDetailsService userDetailsService() {
+	UserDetails normalUser = User.builder()
+								.username("user")
+								.password("$2a$12$08k7tqqv.q1WI/F6SDtsJesu/niAI.CTY0T2pz/cXeUbnQi1LNREa")
+								.roles("USER")
+								.build();
+	UserDetails adminUser = User.builder()
+			.username("admin")
+			.password("$2a$12$4vGptdTAo1NBcWWMw1tQdunepMbztRs/e8eAcW6VZZK2hKPow8aby")
+			.roles("USER","ADMIN")
+			.build();
+	return new InMemoryUserDetailsManager(normalUser,adminUser);
+} */

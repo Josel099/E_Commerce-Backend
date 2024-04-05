@@ -18,7 +18,7 @@ public class CustomUserDetailsServiceImp implements UserDetailsService{
 	private UserRepository userRepository;
 
 
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Optional<User> user = userRepository.findByUsername(username);
@@ -37,10 +37,18 @@ public class CustomUserDetailsServiceImp implements UserDetailsService{
 	
 	
 	
-	
+	/**============================================================================
+	 * Retrieves the roles associated with a user.
+	 * If the user has no roles, it returns an array containing a single role "USER".
+	 * Otherwise, it splits the role string using the comma (,) as the delimiter  into an array of individual roles and returns it.
+	 * 
+	 * @param userObj The User object for which roles are to be retrieved
+	 * @return An array of roles associated with the user
+	 * ============================================================================+*/
 	private String[] getRoles(User userObj) {
 	if(userObj.getRole() == null) return new String[] {"USER"};
 	return userObj.getRole().split(",");
 		}
 
 }
+
