@@ -16,7 +16,7 @@ import com.livares.product.service.UserService;
 
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/authentication")
 public class UserController {
 	@Autowired
 	public UserService userService;
@@ -36,7 +36,7 @@ public class UserController {
 	 * @param loginDTO The LoginDTO containing user login credentials(username and password)
 	 * @return ResponseEntity containing a string indicating the login status
 	====================================================================*/
-	@GetMapping("/login")
+	@GetMapping("/loginOld")
 	public ResponseEntity<Object> authenticateUser(LoginDTO loginDTO){
 		String responseString = userService.loginUser(loginDTO);
 		return ResponseHandler.generateResponse(responseString,HttpStatus.OK,null);

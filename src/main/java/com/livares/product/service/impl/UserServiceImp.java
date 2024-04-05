@@ -7,7 +7,13 @@ import com.livares.product.exception.ErrorCode;
 import com.livares.product.model.User;
 import com.livares.product.repository.UserRepository;
 import com.livares.product.service.UserService;
+
+import lombok.experimental.var;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +37,7 @@ public class UserServiceImp implements UserService {
      * @return A string indicating the result of the registration process
      * =====================================================================
      */
-    @Override
+//    @Override
     public String registerUser(UserDTO userDTO) {
     	// Check if the username already exists
         if (!userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
@@ -41,21 +47,22 @@ public class UserServiceImp implements UserService {
         user.setLastName(userDTO.getLastName());
         user.setUsername(userDTO.getUsername());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setRole(userDTO.getRole());
         // Save the user to the database
         userRepository.save(user);
         return "User Registered Sucessfully";
         } else throw new CustomException(ErrorCode.BAD_REQUEST,"username is already exists") ;
     }
 
-
-    /**
-     * =====================================================================
-     * Authenticates a user login based on the provided login credentials.
-     *
-     * @param loginDTO The DTO containing user login credentials
-     * @return A string indicating the result of the login attempt
-     * ========================================================================
-     */
+//
+//    /**
+//     * =====================================================================
+//     * Authenticates a user login based on the provided login credentials.
+//     *
+//     * @param loginDTO The DTO containing user login credentials
+//     * @return A string indicating the result of the login attempt
+//     * ========================================================================
+//     */
     @Override
     public String loginUser(LoginDTO loginDTO) {
     	try {
@@ -82,4 +89,8 @@ public class UserServiceImp implements UserService {
 		
   
     }
+
+
+
+	
 }

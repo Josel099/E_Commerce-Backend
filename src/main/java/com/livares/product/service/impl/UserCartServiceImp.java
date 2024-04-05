@@ -2,6 +2,7 @@ package com.livares.product.service.impl;
 
 import com.livares.product.Dto.ProductDTO;
 import com.livares.product.exception.CustomException;
+import com.livares.product.exception.ErrorCode;
 import com.livares.product.model.Product;
 import com.livares.product.model.User;
 import com.livares.product.model.UserProductCart;
@@ -55,8 +56,7 @@ public class UserCartServiceImp implements UserCartService {
         	userProductCartRepositery.save(userProductCart);
             
         	return "product added to the cart sucessfully";
-        }
-        return "Product already in the cart";
+        }else throw new CustomException(ErrorCode.BAD_REQUEST, "Product already in the cart");
     }
 
     
@@ -71,7 +71,12 @@ public class UserCartServiceImp implements UserCartService {
      */
     @Override
     public List<ProductDTO> getCartItemsByUserId(int userId) {
-        return productRepository.getCartItemsByUserId(userId);
+    	try {
+    		return productRepository.getCartItemsByUserId(userId);
+		} catch (Exception e) {
+			throw new CustomException(ErrorCode.NOT_FOUND,"user not found");
+		}
+        
     }
 
 
@@ -86,16 +91,13 @@ public class UserCartServiceImp implements UserCartService {
      */
     @Override
     public String deleteCartItem(int userId, int productId) {
-
         // Find the cart entry by userId and productId
         Integer cartId = userProductCartRepositery.findByUserIdAndProductId(userId, productId);
         // Delete the cart entry by cartId
         if (cartId != null) {
             userProductCartRepositery.deleteById(cartId);
             return "deleted Product sucessfully";
-        } else return "Error: Unable to delete the cart item";
-
-
+        } else throw new CustomException(ErrorCode.INVALID_OPERATION,"Error: Unable to delete the cart item") ;
     }
 
 }
