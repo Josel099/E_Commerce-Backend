@@ -55,5 +55,7 @@ public class CustomException extends RuntimeException {
     public CustomException(ErrorCode errorCode, Exception ex) {
         this(errorCode.getCode(), ex);
     }
+    
+    
 }
 

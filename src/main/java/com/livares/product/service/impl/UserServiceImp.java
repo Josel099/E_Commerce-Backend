@@ -2,6 +2,8 @@ package com.livares.product.service.impl;
 
 import com.livares.product.Dto.LoginDTO;
 import com.livares.product.Dto.UserDTO;
+import com.livares.product.exception.CustomException;
+import com.livares.product.exception.ErrorCode;
 import com.livares.product.model.User;
 import com.livares.product.repository.UserRepository;
 import com.livares.product.service.UserService;
@@ -31,10 +33,8 @@ public class UserServiceImp implements UserService {
      */
     @Override
     public String registerUser(UserDTO userDTO) {
-// Check if the username already exists
-        if (userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
-            return "username is already exists";
-        }
+    	// Check if the username already exists
+        if (!userRepository.findByUsername(userDTO.getUsername()).isPresent()) {
         // Create a new User object and set its properties from the DTO
         User user = new User();
         user.setFirstName(userDTO.getFirstName());
@@ -44,6 +44,7 @@ public class UserServiceImp implements UserService {
         // Save the user to the database
         userRepository.save(user);
         return "User Registered Sucessfully";
+        } else throw new CustomException(ErrorCode.BAD_REQUEST,"username is already exists") ;
     }
 
 
@@ -57,21 +58,28 @@ public class UserServiceImp implements UserService {
      */
     @Override
     public String loginUser(LoginDTO loginDTO) {
-        // Find the user by username
-        Optional<User> user = userRepository.findByUsername(loginDTO.getUsername());
-        // Check if the user exists
-        if (user.isPresent()) {
-            // Get the encoded password stored in the database
-            String encodedPasword = user.get().getPassword();
-            // Get the password input by the user
-            String inputPassword = loginDTO.getPassword();
-            // Check if the input password matches the stored encoded password
-            Boolean isPwdRight = passwordEncoder.matches(inputPassword, encodedPasword);
+    	try {
+			
+    	      // Find the user by username
+            Optional<User> user = userRepository.findByUsername(loginDTO.getUsername());
+            // Check if the user exists
+            if (user.isPresent()) {
+                // Get the encoded password stored in the database
+                String encodedPasword = user.get().getPassword();
+                // Get the password input by the user
+                String inputPassword = loginDTO.getPassword();
+                // Check if the input password matches the stored encoded password
+                Boolean isPwdRight = passwordEncoder.matches(inputPassword, encodedPasword);
 
-            if (!isPwdRight) return "password is false";
-            else return "user sucessfully logined";
-        }
-
-        return "username is not exist";
+                if (isPwdRight) return "user sucessfully logined"; 
+                else throw new CustomException(ErrorCode.BAD_REQUEST,"password is false") ;
+            }else throw new CustomException(ErrorCode.BAD_REQUEST, loginDTO.getUsername() + ": username  is not exist");
+    			
+		} catch (Exception e) {
+			throw new CustomException(e);
+		}
+			
+		
+  
     }
 }
