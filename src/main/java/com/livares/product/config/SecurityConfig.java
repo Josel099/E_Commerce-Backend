@@ -7,14 +7,12 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.livares.product.model.AuthenticationSucessHandler;
 import com.livares.product.service.CustomUserDetailsServiceImp;
 
 
@@ -35,20 +33,21 @@ public class SecurityConfig {
      */
     @Bean
    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        
-//    	  return http.build();
     	
     	
     	return http
-    			.csrf(csrf -> csrf.disable()) // csrf disabling 
-    			.authorizeHttpRequests(registry->{
-    			registry.requestMatchers( "/home","/authentication/**").permitAll();  
-    			registry.requestMatchers("/admin/**").hasRole("ADMIN");
-    			registry.requestMatchers("/user/**").hasRole("USER");
-    			registry.anyRequest().authenticated();  // any request other than the specified one's that's requires authentication. 
-    	})
-    			.formLogin(formLogin->formLogin.permitAll()) // customizing the  default login page for permitting for all request. 
-    			.build();
+                .csrf(csrf -> csrf.disable()) // csrf disabling 
+                .authorizeHttpRequests(registry -> {
+                    registry.requestMatchers("/home", "/authentication/**").permitAll();
+                    registry.requestMatchers("/admin/**").hasRole("ADMIN");
+                    registry.requestMatchers("/user/**").hasAnyRole("ADMIN", "USER"); // Allow both ADMIN and USER roles to access "/user/**" URLs
+                    registry.anyRequest().authenticated();  // any request other than the specified one's that's requires authentication. 
+        
+                })
+                .formLogin(login -> login
+                        .permitAll() // Permit all requests to the default login page of Spring Boot
+                        .successHandler(new AuthenticationSucessHandler())) // Chaining for additional configurations
+                .build();
     }
     
     

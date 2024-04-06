@@ -41,6 +41,9 @@ public class UserController {
 	public ResponseEntity<Object> authenticateUser(LoginDTO loginDTO){
 		String responseString = userService.loginUser(loginDTO);
 		return ResponseHandler.generateResponse(responseString,HttpStatus.OK,null);
-	}
+	} 
+
+
 	
 }
+

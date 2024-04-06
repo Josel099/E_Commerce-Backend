@@ -21,13 +21,5 @@ public class ContentController {
 		return "user Home";
 	}
 	
-		@GetMapping("/user/welcome")
-		public String handleUserWelcom() {
-			return "user logined";
-		}
-		
-		@GetMapping("/admin/welcome")
-		public String handleAdminWelcome() {
-			return "Admin logined";
-		}
+	
 }
