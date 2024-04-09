@@ -36,10 +36,10 @@ public class UserController {
 	 * @param loginDTO The LoginDTO containing user login credentials(username and password)
 	 * @return ResponseEntity containing a string indicating the login status
 	====================================================================*/
-	@GetMapping("/login")
-	public ResponseEntity<Object> authenticateUser(LoginDTO loginDTO){
-		String responseString = userService.loginUser(loginDTO);
-		return ResponseHandler.generateResponse(responseString,HttpStatus.OK,null);
-	}
+//	@PostMapping("/login")
+//	public ResponseEntity<Object> authenticateUser(LoginDTO loginDTO){
+//		String responseString = userService.loginUser(loginDTO);
+//		return ResponseHandler.generateResponse(responseString,HttpStatus.OK,null);
+//	}
 	
 }
