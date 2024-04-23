@@ -3,12 +3,16 @@ package com.livares.product.response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-public class ResponseHandler {
+public class ResponseHandler<T> {
 
-    public static ResponseEntity<Object> generateResponse(String message, HttpStatus status, Object responseObj) {
-       
-    	CustomResponse response = new CustomResponse(message,status.value(),responseObj);
+    public static ResponseEntity<Object> generateResponse(String message, HttpStatus status,
+        Object responseObj) {
 
-            return new ResponseEntity<Object>(response,status);
+        CustomResponse<Object> response = new CustomResponse<Object>();
+        response.setMessage(message);
+        response.setStatus(status);
+        response.setData(responseObj);
+        return new ResponseEntity<Object>(response, status);
     }
+
 }
